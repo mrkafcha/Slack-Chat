@@ -1,25 +1,62 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter, Route, Routes, Navigate,
+  useLocation,
+} from 'react-router-dom';
+import { useState } from 'react';
+import NotFound from './pages/NotFound';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import Header from "./Components/Header";
+import useAuth from './hooks/useAuth';
+import AuthContext from "./contexts/AuthContext";
+import SignUp from "./pages/SignUp";
+import store from './slices/index.js';
+import {Provider} from "react-redux";
 
-function App() {
+
+const AuthProvider = ({ children }) => {
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    const logIn = () => setLoggedIn(true);
+    const logOut = () => {
+        localStorage.removeItem('user');
+        setLoggedIn(false);
+    };
+
+    return (
+        <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+
+
+const PrivateRoute = ({ children }) => {
+  const auth = useAuth();
+  const location = useLocation();
+  const user = JSON.parse(localStorage.getItem('user'));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      user ? children : <Navigate to="/login" state={{ from: location }} />
   );
-}
+};
+
+const App = () => (
+    <Provider store={store}>
+        <BrowserRouter >
+            <AuthProvider >
+                <Header />
+                <Routes>
+                    <Route path="*" element={<NotFound />} />
+                    <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<SignUp />}/>
+                </Routes>
+            </AuthProvider>
+        </BrowserRouter>
+    </Provider>
+
+);
 
 export default App;
