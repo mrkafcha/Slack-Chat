@@ -24,9 +24,11 @@ const Channel = ({ data }) => {
                 <Dropdown as={ButtonGroup} drop="down" className="w-100 ">
                     <Button onClick={() => switchChannel()} className="w-100 border-0 rounded-0 text-start text-truncate" style={variantButton}>{`# ${data.name}`}</Button>
 
-                    <Dropdown.Toggle as={Button} className="text-end border-0" split style={variantButton} id={`dropdown-split-button${data.id}`}>
+                    <Dropdown.Toggle as={Button} className="text-end border-0" split style={variantButton}
+                                     id={`dropdown-split-button${data.id}`}>
+                        <span className="visually-hidden">{t('dropdown.toggle')}</span>
                     </Dropdown.Toggle>
-                    <Dropdown.Menu >
+                    <Dropdown.Menu>
                         <Dropdown.Item
                             onClick={() => handleShowModal('removing', data)}>{t('channels.dropdown.delete')}</Dropdown.Item>
                         <Dropdown.Item
