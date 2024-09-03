@@ -1,5 +1,4 @@
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/esm/Row';
 import Channels from '../components/channels/Channels';
 import Messages from '../components/messages/Messages';
 

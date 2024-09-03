@@ -1,5 +1,3 @@
-import Nav from 'react-bootstrap/Nav';
-import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
