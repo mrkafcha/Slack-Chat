@@ -7,7 +7,8 @@ import { changeChannel, setChannelModal } from '../../store/slices/appSlice';
 const Channel = ({ data }) => {
     const { t } = useTranslation();
     const currentChannelId = useSelector((state) => state.app.currentChannelId);
-    const variantButton = data.id === currentChannelId ? { background: '#831d0b', color: 'white' } : { background: '#f8f9fa', color: 'black' };
+    const variantStyle = data.id === currentChannelId ? { background: '#831d0b', color: 'white' } : { background: '#f8f9fa', color: 'black' };
+    const variantButton = data.id === currentChannelId ? 'secondary' : 'light';
     const dispatch = useDispatch();
     const switchChannel = () => {
         const { id, name } = data;
@@ -22,9 +23,9 @@ const Channel = ({ data }) => {
         <li className="nav-item w-100">
             {data.removable ? (
                 <Dropdown as={ButtonGroup} drop="down" className="w-100 ">
-                    <Button onClick={() => switchChannel()} className="w-100 border-0 rounded-0 text-start text-truncate" style={variantButton}>{`# ${data.name}`}</Button>
+                    <Button onClick={() => switchChannel()} className="w-100 border-0 rounded-0 text-start text-truncate" variant={variantButton} style={variantStyle}>{`# ${data.name}`}</Button>
 
-                    <Dropdown.Toggle as={Button} className="text-end border-0" split style={variantButton}
+                    <Dropdown.Toggle as={Button} className="text-end border-0" split style={variantStyle}
                                      id={`dropdown-split-button${data.id}`}>
                         <span className="visually-hidden">{t('dropdown.toggle')}</span>
                     </Dropdown.Toggle>
@@ -39,7 +40,7 @@ const Channel = ({ data }) => {
                 <Button
                     as={ButtonGroup}
                     name={data.name}
-                    style={variantButton}
+                    style={variantStyle}
                     className="w-100 text-start btn border-0"
                     onClick={() => switchChannel(data)}
                 >
