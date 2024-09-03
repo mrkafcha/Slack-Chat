@@ -2,13 +2,13 @@ lint-frontend:
 	make -C frontend lint
 
 install:
-	npm ci
+	npm ci && make -C frontend install
 
 start-frontend:
-	make -C frontend start
+	cd frontend && npm start
 
 start-backend:
-	npx start-server
+	npm run start
 
 deploy:
 	git push heroku main
