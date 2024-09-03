@@ -30,7 +30,7 @@ const DeleteChannel = (props) => {
                 <p>{t('modals.textDeleteChannel')}</p>
                 <div className="d-flex justify-content-end mt-2">
                     <Button type="button" variant="secondary" onClick={handleCloseModal} className="me-2">{t('form.buttons.cancel')}</Button>
-                    <Button type="button" className="border-0" style={{ background: '#831d0b'}} onClick={() => deleteChannel(modalChannelId)}>{t('form.buttons.delete')}</Button>
+                    <Button type="button" variant="danger" style={{ background: '#831d0b'}} onClick={() => deleteChannel(modalChannelId)}>{t('form.buttons.delete')}</Button>
                 </div>
             </Modal.Body>
         </Modal>

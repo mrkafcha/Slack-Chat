@@ -61,7 +61,7 @@ const Channels = () => {
         <Card className="col-4 col-md-3 px-0 bg-light flex-column h-100 d-flex" style={{ borderRadius: "20px 20px 20px 20px"}}>
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
                 <b>{t('channels.title')}</b>
-                <Button size="sm" variant="outline-primary"  onClick={() => handleShowModal('adding')}>
+                <Button className="p-1 text-primary btn-group-vertical bg-light " onClick={() => handleShowModal('adding')}>
                     +
                 </Button>
             </div>
