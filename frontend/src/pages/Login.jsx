@@ -1,91 +1,85 @@
-import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
-import { useFormik } from 'formik';
-import { useLocation, useNavigate } from 'react-router-dom';
-import {Form, Button, Card, Col} from 'react-bootstrap';
-import apiPaths from '../routes.js';
-import useAuth from "../hooks/useAuth";
-import {useDispatch} from "react-redux";
-import {actions} from "../slices/authSlice.js";
+import { Formik } from 'formik';
+import { useNavigate, Link } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+import Image from 'react-bootstrap/Image';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { useLoginMutation } from '../api/auth';
+import { appPaths } from '../routes';
+import useAuth from '../hooks';
 
 const Login = () => {
-    const [authFailed, setAuthFailed] = useState(false);
+    const { t } = useTranslation();
+    const { logIn } = useAuth();
     const navigate = useNavigate();
-    const auth = useAuth();
-    const dispatch = useDispatch();
-
-    const inputRef = useRef();
-    useEffect(() => {
-        inputRef.current.focus();
-    }, []);
-
-    const formik = useFormik({
-        initialValues: {
-            username: '',
-            password: '',
-        },
-        onSubmit: async (values) => {
-            setAuthFailed(false);
-
-            try {
-                const res = await axios.post(apiPaths.loginPath(), values);
-                localStorage.setItem('user', JSON.stringify(res.data));
-                dispatch(actions.setUser(res.data));
-                auth.logIn();
-                navigate('/');
-            } catch (err) {
-                console.log(err)
-                throw err
+    const [login] = useLoginMutation();
+    const handleFormSubmit = async (values, { setErrors }) => {
+        const { nickname, password } = values;
+        const user = {
+            username: nickname,
+            password,
+        };
+        const { data, error } = await login(user);
+        if (data) {
+            logIn(data.token, nickname);
+            navigate(appPaths.home());
+        }
+        if (error) {
+            switch (error.status) {
+                case 401: {
+                    setErrors({ password: t('form.errors.password') });
+                    break;
+                }
+                case 'FETCH_ERROR': {
+                    toast.error(t('toast.errorNetwork'));
+                    break;
+                }
+                default: {
+                    setErrors({ password: t('form.errors.password') });
+                }
             }
-        },
-    });
-
+        }
+    };
     return (
-        <div className="container-fluid m-auto " >
-            <Col className=" row justify-content-center align-content-center " >
+        <div className="container-fluid m-auto ">
+            <Col className="row justify-content-center align-content-center ">
                     <Card className="m-5 w-50 p-5 background" style={{ maxWidth: '500px', minWidth: '250px', background: '#831d0b', borderRadius: '50px' }}>
                         <Card.Header as="h1" className="text-center text-white m-2 border-1 flex-nowrap">
-                            Войти
+                            {t('loginPage.title')}
                         </Card.Header>
                         <Card.Body className="justify-content-center">
-                                <Form onSubmit={formik.handleSubmit}>
-                                    <Form.Group className="text-white mb-2">
-                                        <Form.Label htmlFor="username">Username</Form.Label>
-                                        <Form.Control
-                                            ref={inputRef}
-                                            required
-                                            placeholder="username"
-                                            className=" border-0"
-                                            id="username"
-                                            name="username"
-                                            type="text"
-                                            style={{ background: '#dad5b5' }}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.username}
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="text-white mb-4">
-                                        <Form.Label htmlFor="password">Password</Form.Label>
-                                        <Form.Control
-                                            placeholder="password"
-                                            required
-                                            className=" border-0"
-                                            style={{ background: '#dad5b5' }}
-                                            id="password"
-                                            name="password"
-                                            type="password"
-                                            onChange={formik.handleChange}
-                                            value={formik.values.password}
-                                        />
-                                    </Form.Group>
-                                    <Button className="w-100 border-0" style={{ color: '#831d0b', background: '#dad5b5', borderRadius: '50px', borderColor: 'none'}} type="submit" variant="outline-primary">Submit</Button>
-                                </Form>
+                                <Formik
+                                    initialValues={{ nickname: '', password: '' }}
+                                    onSubmit={handleFormSubmit}
+                                >
+                                    {({
+                                          handleSubmit, handleChange, values, errors,
+                                      }) => (
+                                        <Form onSubmit={handleSubmit} className="form">
+                                            <Form.Group className="text-white mb-2">
+                                                <Form.Label htmlFor="nickname">{t('loginPage.nickname')}</Form.Label>
+                                                <Form.Control className=" border-0" style={{ background: '#dad5b5' }} id="nickname" required value={values.nickname} onChange={handleChange} type="text" name="nickname" isInvalid={!!errors.password} autoFocus />
+                                            </Form.Group>
+                                            <Form.Group className="text-white mb-5">
+                                                <Form.Label htmlFor="password">{t('loginPage.password')}</Form.Label>
+                                                <Form.Control className=" border-0" style={{ background: '#dad5b5' }} id="password" required value={values.password} onChange={handleChange} type="password" name="password" isInvalid={!!errors.password} />
+                                                <Form.Control.Feedback type="invalid" tooltip>{errors.password}</Form.Control.Feedback>
+                                            </Form.Group>
+                                            <Button type="submit" className="w-100 border-0" style={{ color: '#831d0b', background: '#dad5b5', borderRadius: '50px', borderColor: 'none'}} variant="outline-primary">{t('loginPage.button')}</Button>
+                                        </Form>
+                                    )}
+                                </Formik>
                         </Card.Body>
                         <Card.Footer className="text-center text-white">
-                            <div >
-                                <span>Нет аккаунта?</span>
+                            <div className="text-center">
+                                <span>{t('loginPage.footer.text')}</span>
                                 <br />
-                                <a href='/signup'>Регистрация</a>
+                                <Link to={appPaths.signup()}>{t('loginPage.footer.link')}</Link>
                             </div>
                         </Card.Footer>
                     </Card>
@@ -93,4 +87,5 @@ const Login = () => {
         </div>
     );
 };
+
 export default Login;

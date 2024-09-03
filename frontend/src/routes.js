@@ -1,10 +1,18 @@
-const apiPath = '/api/v1';
+const apiPath = 'api/v1';
 
 const apiPaths = {
-  homePath: () => [apiPath],
-  loginPath: () => [apiPath, 'login'].join('/'),
-  channelPath: () => [apiPath, 'channels'].join('/'),
-  messagePath: () => [apiPath, 'message'].join('/'),
+  origin: () => apiPath,
+  signup: () => [apiPath, 'signup'].join('/'),
+  login: () => [apiPath, 'login'].join('/'),
+  messages: () => [apiPath, 'messages'].join('/'),
+  channels: () => [apiPath, 'channels'].join('/'),
 };
 
-export default apiPaths;
+const appPaths = {
+  home: () => '/',
+  login: () => '/login',
+  signup: () => '/signup',
+  notFound: () => '*',
+};
+
+export { apiPaths, appPaths };
