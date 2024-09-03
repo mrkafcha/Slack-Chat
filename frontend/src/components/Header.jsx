@@ -15,7 +15,7 @@ const Header = () => {
     return (
         <Navbar className="shadow-lg" expand="lg" variant="light" style={{ background: '#57160a' }}>
             <Container>
-                <Navbar.Brand className="text-white" href="/">Slack Chat</Navbar.Brand>
+                <Navbar.Brand className="text-white" href="/">Hexlet Chat</Navbar.Brand>
                 {app.token
                     ? <Button
                         onClick={() => logOutUser()}
