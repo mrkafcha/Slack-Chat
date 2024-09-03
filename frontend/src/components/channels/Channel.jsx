@@ -23,7 +23,7 @@ const Channel = ({ data }) => {
         <li className="nav-item w-100">
             {data.removable ? (
                 <Dropdown as={ButtonGroup} drop="down" className="w-100 ">
-                    <Button onClick={() => switchChannel()} className="w-100 rounded-0 text-start text-truncate btn " variant={variantButton} >{`# ${data.name}`}</Button>
+                    <Button onClick={() => switchChannel()} className="w-100 rounded-0 text-start text-truncate btn" variant={variantButton} >{`# ${data.name}`}</Button>
 
                     <Dropdown.Toggle as={Button} className="text-end border-0" split variant={variantButton}
                                      id={`dropdown-split-button${data.id}`}>
