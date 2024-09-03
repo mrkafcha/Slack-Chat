@@ -34,14 +34,15 @@ const Channel = ({ data }) => {
                     </Dropdown.Menu>
                 </Dropdown>
             ) : (
-                <Dropdown
+                <Button
                     as={ButtonGroup}
+                    name={data.name}
                     style={variantButton}
                     className="w-100 text-start btn border-0"
                     onClick={() => switchChannel(data)}
                 >
                     {`# ${data.name}`}
-                </Dropdown>
+                </Button>
             )}
         </li>
     );

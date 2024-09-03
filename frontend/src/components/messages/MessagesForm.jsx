@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import * as filter from 'leo-profanity';
 import Button from 'react-bootstrap/esm/Button';
-import { Form } from 'react-bootstrap';
+import {Form, InputGroup} from 'react-bootstrap';
 
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -33,12 +33,12 @@ const MessagesForm = () => {
             <Formik initialValues={{ message: '' }} onSubmit={handleFormSubmit}>
                 {({ handleSubmit, handleChange, values }) => (
                     <Form onSubmit={handleSubmit} className="py-1 border-0 rounded-2">
-                        <Form.Group className="input-group has-validation">
+                        <InputGroup className="input-group has-validation">
                             <Form.Control className=' p-0 ps-2' placeholder={t('form.placeholders.message')} autoFocus id="new-message" aria-label={t('form.labels.newMessage')} value={values.message} onChange={handleChange} type="text" name="message" />
                             <Button className="border-0" style={{background: '#831d0b'}} type="submit">
                                 {t('form.buttons.submit')}
                             </Button>
-                        </Form.Group>
+                        </InputGroup>
                     </Form>
                 )}
             </Formik>
