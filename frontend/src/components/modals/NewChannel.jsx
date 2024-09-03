@@ -8,54 +8,54 @@ import { useAddChannelMutation } from '../../api/channels';
 import { changeChannel } from '../../store/slices/appSlice';
 
 const NewChannel = (props) => {
-    const {
-        handleCloseModal, showModal, dispatch, t, channelNameSchema,
-    } = props;
-    const [addChannel] = useAddChannelMutation();
-    const handleFormSubmit = async (values) => {
-        try {
-            const { channelName } = values;
-            const data = {
-                name: filter.clean(channelName),
-                removable: true,
-            };
-            const payload = await addChannel(data).unwrap();
-            const { id, name } = payload;
-            dispatch(changeChannel({ id, name }));
-            handleCloseModal();
-            toast.success(t('toast.addChannel'));
-        } catch (e) {
-            console.error(e);
-        }
-    };
-    return (
-        <Modal show={showModal === 'adding'} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>{t('modals.titleAddChannel')}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Formik
-                    initialValues={{ channelName: '' }}
-                    onSubmit={handleFormSubmit}
-                    validationSchema={channelNameSchema}
-                >
-                    {({
-                          values, handleChange, handleSubmit, errors,
-                      }) => (
-                        <Form onSubmit={handleSubmit}>
-                            <Form.Label htmlFor="channelName">{t('form.labels.channelName')}</Form.Label>
-                            <Form.Control value={values.channelName} name="channelName" onChange={handleChange} id="channelName" isInvalid={!!errors.channelName} autoFocus />
-                            <Form.Control.Feedback type="invalid">{errors.channelName}</Form.Control.Feedback>
-                            <div className="d-flex justify-content-end mt-2">
-                                <Button type="button" variant="secondary" onClick={handleCloseModal} className="me-2">{t('form.buttons.cancel')}</Button>
-                                <Button type="submit" className="border-0" style={{ background: '#831d0b'}}>{t('form.buttons.submit')}</Button>
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
-            </Modal.Body>
-        </Modal>
-    );
+  const {
+    handleCloseModal, showModal, dispatch, t, channelNameSchema,
+  } = props;
+  const [addChannel] = useAddChannelMutation();
+  const handleFormSubmit = async (values) => {
+    try {
+      const { channelName } = values;
+      const data = {
+        name: filter.clean(channelName),
+        removable: true,
+      };
+      const payload = await addChannel(data).unwrap();
+      const { id, name } = payload;
+      dispatch(changeChannel({ id, name }));
+      handleCloseModal();
+      toast.success(t('toast.addChannel'));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  return (
+    <Modal show={showModal === 'adding'} onHide={handleCloseModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t('modals.titleAddChannel')}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Formik
+          initialValues={{ channelName: '' }}
+          onSubmit={handleFormSubmit}
+          validationSchema={channelNameSchema}
+        >
+          {({
+            values, handleChange, handleSubmit, errors,
+          }) => (
+            <Form onSubmit={handleSubmit}>
+              <Form.Label htmlFor="channelName">{t('form.labels.channelName')}</Form.Label>
+              <Form.Control value={values.channelName} name="channelName" onChange={handleChange} id="channelName" isInvalid={!!errors.channelName} autoFocus />
+              <Form.Control.Feedback type="invalid">{errors.channelName}</Form.Control.Feedback>
+              <div className="d-flex justify-content-end mt-2">
+                <Button type="button" variant="secondary" onClick={handleCloseModal} className="me-2">{t('form.buttons.cancel')}</Button>
+                <Button type="submit" className="border-0" style={{ background: '#831d0b' }}>{t('form.buttons.submit')}</Button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </Modal.Body>
+    </Modal>
+  );
 };
 
 export default NewChannel;
