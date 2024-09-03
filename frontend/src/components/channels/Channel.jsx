@@ -7,7 +7,7 @@ import { changeChannel, setChannelModal } from '../../store/slices/appSlice';
 const Channel = ({ data }) => {
     const { t } = useTranslation();
     const currentChannelId = useSelector((state) => state.app.currentChannelId);
-    // const variantStyle = data.id === currentChannelId ? { background: '#831d0b', color: 'white' } : { background: '#f8f9fa', color: 'black' };
+    const variantStyle = data.id === currentChannelId ? { background: '#831d0b', color: 'white', border: 'none' } : { background: '#f8f9fa', color: 'black', border: 'none' };
     const variantButton = data.id === currentChannelId ? 'secondary' : 'light';
     const dispatch = useDispatch();
     const switchChannel = () => {
@@ -23,9 +23,9 @@ const Channel = ({ data }) => {
         <li className="nav-item w-100">
             {data.removable ? (
                 <Dropdown as={ButtonGroup} drop="down" className="w-100 ">
-                    <Button onClick={() => switchChannel()} className="w-100 rounded-0 text-start text-truncate btn" variant={variantButton} >{`# ${data.name}`}</Button>
+                    <Button onClick={() => switchChannel()} className="w-100 rounded-0 text-start text-truncate" variant={variantButton} style={variantStyle} >{`# ${data.name}`}</Button>
 
-                    <Dropdown.Toggle as={Button} className="text-end border-0" split variant={variantButton}
+                    <Dropdown.Toggle as={Button} className="text-end border-0" split style={variantStyle} variant={variantButton}
                                      id={`dropdown-split-button${data.id}`}>
                         <span className="visually-hidden">{t('dropdown.toggle')}</span>
                     </Dropdown.Toggle>
@@ -40,7 +40,7 @@ const Channel = ({ data }) => {
                 <Button
                     as={ButtonGroup}
                     name={data.name}
-
+                    style={variantStyle}
                     variant={variantButton}
                     className="w-100 text-start btn border-0"
                     onClick={() => switchChannel(data)}
