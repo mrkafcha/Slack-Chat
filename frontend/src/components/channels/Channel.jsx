@@ -41,7 +41,7 @@ const Channel = ({ data }) => {
                     className="w-100 text-start btn border-0"
                     onClick={() => switchChannel(data)}
                 >
-                    {`# ${data.name}`}
+                    # {data.name}
                 </Button>
             )}
         </li>
