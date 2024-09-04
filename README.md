@@ -3,9 +3,16 @@
 
 # Description
 There is a chat, whe you can communicate with your friends, family or any other people. If 2 base channels is not enough for you, feel free to create your own channel and start chating with whatever you want!
-## [Slack-Chat](https://slack-chat-97nu.onrender.com)
+
+# Demonstration
+### [Slack-Chat](https://slack-chat-97nu.onrender.com)
 
 # Installation:
+### Clone repository
+```
+git clone https://github.com/mrkafcha/frontend-project-12.git
+```
+### Installation
 ```
  $ make install
 
