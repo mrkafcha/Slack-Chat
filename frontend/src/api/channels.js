@@ -4,9 +4,11 @@ import { apiPaths } from '../routes';
 
 export const channelsApi = createApi({
   reducerPath: 'channels',
-  baseQuery: fetchBaseQuery(
-    { baseUrl: apiPaths.channels(), prepareHeaders: setHeaders, tagTypes: ['Channels'] },
-  ),
+  baseQuery: fetchBaseQuery({
+    baseUrl: apiPaths.channels(),
+    prepareHeaders: setHeaders,
+    tagTypes: ['Channels'],
+  }),
   endpoints: (builder) => ({
     getChannels: builder.query({
       query: () => '',

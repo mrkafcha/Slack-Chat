@@ -4,13 +4,17 @@ import Button from 'react-bootstrap/Button';
 import { Formik } from 'formik';
 import { toast } from 'react-toastify';
 import * as filter from 'leo-profanity';
+import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useAddChannelMutation } from '../../api/channels';
 import { changeChannel } from '../../store/slices/appSlice';
 
 const NewChannel = (props) => {
   const {
-    handleCloseModal, showModal, dispatch, t, channelNameSchema,
+    handleCloseModal, showModal, channelNameSchema,
   } = props;
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [addChannel] = useAddChannelMutation();
   const handleFormSubmit = async (values) => {
     try {
@@ -48,7 +52,7 @@ const NewChannel = (props) => {
               <Form.Control.Feedback type="invalid">{errors.channelName}</Form.Control.Feedback>
               <div className="d-flex justify-content-end mt-2">
                 <Button type="button" variant="secondary" onClick={handleCloseModal} className="me-2">{t('form.buttons.cancel')}</Button>
-                <Button type="submit" className="border-0" style={{ background: '#831d0b' }}>{t('form.buttons.submit')}</Button>
+                <Button type="submit" className="border-0 bg-red-brown">{t('form.buttons.submit')}</Button>
               </div>
             </Form>
           )}

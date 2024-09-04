@@ -1,20 +1,25 @@
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { useRemoveChannelMutation } from '../../api/channels';
 import { changeChannel } from '../../store/slices/appSlice';
 
 const DeleteChannel = (props) => {
   const {
-    handleCloseModal, showModal, currentChannelId, modalChannelId, dispatch, t,
+    handleCloseModal, showModal, currentChannelId, modalChannelId,
   } = props;
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const defaultChannel = { id: '1', name: 'general' };
   const [removeChannel] = useRemoveChannelMutation();
   const deleteChannel = async (id) => {
     try {
       await removeChannel(id).unwrap();
       handleCloseModal();
       if (id === currentChannelId) {
-        dispatch(changeChannel({ id: '1', name: 'general' }));
+        dispatch(changeChannel(defaultChannel));
       }
       toast.success(t('toast.deleteChannel'));
     } catch (e) {
@@ -30,7 +35,7 @@ const DeleteChannel = (props) => {
         <p>{t('modals.textDeleteChannel')}</p>
         <div className="d-flex justify-content-end mt-2">
           <Button type="button" variant="secondary" onClick={handleCloseModal} className="me-2">{t('form.buttons.cancel')}</Button>
-          <Button type="button" variant="danger" style={{ background: '#831d0b' }} onClick={() => deleteChannel(modalChannelId)}>{t('form.buttons.delete')}</Button>
+          <Button className="bg-red-brown" type="button" variant="danger" onClick={() => deleteChannel(modalChannelId)}>{t('form.buttons.delete')}</Button>
         </div>
       </Modal.Body>
     </Modal>

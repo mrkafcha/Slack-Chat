@@ -13,6 +13,7 @@ import Channel from './Channel';
 import { appPaths } from '../../routes';
 import useAuth from '../../hooks';
 import ModalContainer from '../modals';
+import { messagesApi, useRemoveMessageMutation } from '../../api/messages';
 
 const Channels = () => {
   const { t } = useTranslation();
@@ -20,6 +21,7 @@ const Channels = () => {
   const navigate = useNavigate();
   const { logOut } = useAuth();
   const { data: channels = [], error: channelError } = useGetChannelsQuery();
+  const [removeMessage] = useRemoveMessageMutation();
   const handleShowModal = (modalName, channel = { id: '', name: '' }) => {
     dispatch(setChannelModal({ id: channel.id, name: channel.name, modalName }));
   };
@@ -38,7 +40,20 @@ const Channels = () => {
       }));
     };
     const handleRemoveChannel = ({ id }) => {
-      dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draft) => draft.filter((curChannels) => curChannels.id !== id)));
+      dispatch(messagesApi.util.updateQueryData(
+        'getMessages',
+        undefined,
+        (draft) => (
+          draft
+            .filter((mess) => mess.channelId === id)
+            .forEach((mess) => removeMessage(mess.id))
+        ),
+      ));
+      dispatch(channelsApi.util.updateQueryData(
+        'getChannels',
+        undefined,
+        (draft) => draft.filter((curChannels) => curChannels.id !== id),
+      ));
     };
     const handleRenameChannel = ({ id, name }) => {
       dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
@@ -58,10 +73,10 @@ const Channels = () => {
   }, [dispatch]);
   return (
 
-    <Card className="col-4 col-md-3 px-0 bg-light flex-column h-100 d-flex" style={{ borderRadius: '20px 20px 20px 20px' }}>
+    <Card id="cardChannels" className="col-4 col-md-3 px-0 bg-light flex-column h-100 d-flex">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
         <b>{t('channels.title')}</b>
-        <Button className="p-0 text-primary btn-group-vertical bg-light " style={{ borderColor: '#831d0b' }} onClick={() => handleShowModal('adding')}>
+        <Button id="addChannelButton" className="p-0 text-primary btn-group-vertical bg-light " onClick={() => handleShowModal('adding')}>
           +
         </Button>
       </div>

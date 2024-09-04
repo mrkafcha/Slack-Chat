@@ -9,20 +9,16 @@ const Header = () => {
   const { logOut } = useAuth();
   const { t } = useTranslation();
   const app = useSelector((state) => state.app);
-  const logOutUser = () => {
-    logOut();
-  };
+
   return (
-    <Navbar className="shadow-lg" expand="lg" variant="light" style={{ background: '#57160a' }}>
+    <Navbar className="shadow-lg " expand="lg" variant="light" style={{ background: '#57160a' }}>
       <Container>
         <Navbar.Brand className="text-white" href="/">Hexlet Chat</Navbar.Brand>
         {app.token
           ? (
             <Button
-              onClick={() => logOutUser()}
-              style={{
-                color: '#831d0b', background: '#dad5b5', borderRadius: '10px 10px 10px 10px', borderColor: 'black',
-              }}
+              className="buttonHeader"
+              onClick={logOut}
             >
               {t('header.logout')}
             </Button>

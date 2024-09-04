@@ -30,10 +30,11 @@ const Messages = () => {
       socket.off('newMessage');
     };
   }, [dispatch, messagesContainer]);
+
   return (
-    <Card className="col p-0 h-100 bg-light" style={{ borderRadius: '20px 20px 20px 20px' }}>
+    <Card id="cardMessage" className="col p-0 h-100 bg-light">
       <div className="d-flex flex-column h-100">
-        <div className="text-white mb-4 p-3  small" style={{ background: '#831d0b', borderRadius: '20px 20px 0 0' }}>
+        <div id="headerMessageForm" className="text-white mb-4 p-3 bg-red-brown small">
           <p className="mb-0">
             <b>
               {`# ${currentChannelName}`}
@@ -46,8 +47,9 @@ const Messages = () => {
         <div className="chat-message overflow-auto px-5" ref={messagesContainer}>
           {filteredMessages.map((message) => (
             <div className="text-break mb-2" key={message.id}>
-              <b>{message.username}</b>
+              <b id="userName">{message.username}</b>
               :
+              {' '}
               {message.message}
             </div>
           ))}

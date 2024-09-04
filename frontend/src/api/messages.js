@@ -4,13 +4,20 @@ import { apiPaths } from '../routes';
 
 export const messagesApi = createApi({
   reducerPath: 'messages',
-  baseQuery: fetchBaseQuery(
-    { baseUrl: apiPaths.messages(), prepareHeaders: setHeaders, tagTypes: ['Messages'] },
-  ),
-  tagTypes: ['Messages'],
+  baseQuery: fetchBaseQuery({
+    baseUrl: apiPaths.messages(),
+    prepareHeaders: setHeaders,
+    tagTypes: ['Messages'],
+  }),
   endpoints: (builder) => ({
     getMessages: builder.query({
       query: () => '',
+      providesTags: (result) => (result
+        ? [
+          ...result.map(({ id }) => ({ type: 'Messages', id })),
+          { type: 'Messages', id: 'LIST' },
+        ]
+        : [{ type: 'Messages', id: 'LIST' }]),
     }),
     addMessage: builder.mutation({
       query: (message) => ({

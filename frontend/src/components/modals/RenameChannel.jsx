@@ -1,17 +1,20 @@
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { Formik } from 'formik';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useUpdateChannelMutation } from '../../api/channels';
 import { changeChannel } from '../../store/slices/appSlice';
 
 const RenameChannel = (props) => {
   const {
-    handleCloseModal, showModal, modalChannelId, dispatch, t, channelNameSchema,
+    handleCloseModal, showModal, modalChannelId, channelNameSchema,
   } = props;
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
   const input = useRef();
   const [updateChannel] = useUpdateChannelMutation();
   const modalChannelName = useSelector((state) => state.app.modalChannelName);
@@ -58,7 +61,7 @@ const RenameChannel = (props) => {
               <Form.Control.Feedback type="invalid">{errors.channelName}</Form.Control.Feedback>
               <div className="d-flex justify-content-end mt-2">
                 <Button type="button" variant="secondary" onClick={handleCloseModal} className="me-2">{t('form.buttons.cancel')}</Button>
-                <Button type="submit" className="border-0" style={{ background: '#831d0b' }}>{t('form.buttons.submit')}</Button>
+                <Button type="submit" className="border-0 bg-red-brown">{t('form.buttons.submit')}</Button>
               </div>
             </Form>
           )}

@@ -38,8 +38,6 @@ const ModalContainer = () => {
       showModal={showModal}
       currentChannelId={currentChannelId}
       modalChannelId={modalChannelId}
-      dispatch={dispatch}
-      t={t}
       channelNameSchema={channelNameSchema}
     />
   );

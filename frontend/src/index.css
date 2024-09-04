@@ -1,0 +1,29 @@
+#cardChannels {
+    border-radius: 20px 20px 20px 20px;
+}
+
+#addChannelButton {
+    border-color: #831d0b;
+}
+
+#cardMessage {
+    border-radius: 20px 20px 20px 20px;
+}
+
+#headerMessageForm {
+    border-radius: 20px 20px 0 0;
+}
+
+#userName {
+    color: #831d0b;
+}
+
+.buttonHeader {
+    color: #831d0b;
+    background: #dad5b5;
+    border-radius: 10px 10px 10px 10px;
+    border-color: black;
+}
+.bg-red-brown {
+    background: #831d0b;
+}
