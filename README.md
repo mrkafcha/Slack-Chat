@@ -9,7 +9,9 @@ There is a chat, whe you can communicate with your friends, family or any other 
 ```
  $ make install
 
- $ npm link
+ $ make start
+ 
+ $ make build
 ```
 # System requirements:
 ```
