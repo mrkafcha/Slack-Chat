@@ -2,32 +2,32 @@ import { useSelector } from 'react-redux';
 import * as filter from 'leo-profanity';
 import Button from 'react-bootstrap/esm/Button';
 import { Form, InputGroup } from 'react-bootstrap';
-
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useAddMessageMutation } from '../../api/messages';
 
 const MessagesForm = () => {
   const { t } = useTranslation();
   const currentChannelId = useSelector((state) => state.app.currentChannelId);
   const username = useSelector((state) => state.app.username);
-  const [addMessage] = useAddMessageMutation();
+  const [addMessage, { error }] = useAddMessageMutation();
 
   const handleFormSubmit = async (values, { setSubmitting, resetForm }) => {
-    try {
-      const { message } = values;
-      const data = {
-        message: filter.clean(message),
-        channelId: currentChannelId,
-        username,
-      };
-      await addMessage(data);
-      resetForm();
-    } catch (e) {
-      setSubmitting(false);
-      console.error(e);
-      throw e;
+    const { message } = values;
+    const data = {
+      message: filter.clean(message),
+      channelId: currentChannelId,
+      username,
+    };
+    await addMessage(data);
+    resetForm();
+
+    if (error) {
+      toast.error(t('toast.errorMessage'));
+      throw error;
     }
+    setSubmitting(false);
   };
 
   return (

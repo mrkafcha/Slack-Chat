@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useRemoveChannelMutation } from '../../api/channels';
 import { changeChannel } from '../../store/slices/appSlice';
+import defaultChannel from '../../helpers/defaultChannel';
 
 const DeleteChannel = (props) => {
   const {
@@ -12,7 +13,6 @@ const DeleteChannel = (props) => {
   } = props;
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const defaultChannel = { id: '1', name: 'general' };
   const [removeChannel] = useRemoveChannelMutation();
   const deleteChannel = async (id) => {
     try {

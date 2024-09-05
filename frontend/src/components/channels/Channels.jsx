@@ -1,27 +1,27 @@
 import Button from 'react-bootstrap/Button';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import {
   useGetChannelsQuery, channelsApi,
 } from '../../api/channels';
 import { setChannelModal } from '../../store/slices/appSlice';
-import socket from '../../socket';
 import Channel from './Channel';
 import { appPaths } from '../../routes';
 import useAuth from '../../hooks';
 import ModalContainer from '../modals';
-import { messagesApi, useRemoveMessageMutation } from '../../api/messages';
+import SocketContext from '../../context/socket';
+import { messagesApi } from '../../api/messages';
 
 const Channels = () => {
+  const socket = useContext(SocketContext);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { logOut } = useAuth();
   const { data: channels = [], error: channelError } = useGetChannelsQuery();
-  const [removeMessage] = useRemoveMessageMutation();
   const handleShowModal = (modalName, channel = { id: '', name: '' }) => {
     dispatch(setChannelModal({ id: channel.id, name: channel.name, modalName }));
   };
@@ -35,9 +35,13 @@ const Channels = () => {
 
   useEffect(() => {
     const handleNewChannel = (channel) => {
-      dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
-        draft.push(channel);
-      }));
+      dispatch(channelsApi.util.updateQueryData(
+        'getChannels',
+        undefined,
+        (draft) => {
+          draft.push(channel);
+        },
+      ));
     };
     const handleRemoveChannel = ({ id }) => {
       dispatch(messagesApi.util.updateQueryData(
@@ -45,8 +49,7 @@ const Channels = () => {
         undefined,
         (draft) => (
           draft
-            .filter((mess) => mess.channelId === id)
-            .forEach((mess) => removeMessage(mess.id))
+            .filter((mess) => mess.channelId !== id)
         ),
       ));
       dispatch(channelsApi.util.updateQueryData(
@@ -73,10 +76,10 @@ const Channels = () => {
   }, [dispatch]);
   return (
 
-    <Card id="cardChannels" className="col-4 col-md-3 px-0 bg-light flex-column h-100 d-flex">
+    <Card className="col-4 col-md-3 px-0 bg-light flex-column h-100 d-flex cardBorderRadius">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
         <b>{t('channels.title')}</b>
-        <Button id="addChannelButton" className="p-0 text-primary btn-group-vertical bg-light " onClick={() => handleShowModal('adding')}>
+        <Button className="p-0 btn-group-vertical bg-light border-red-brown color-red-brown" onClick={() => handleShowModal('adding')}>
           +
         </Button>
       </div>

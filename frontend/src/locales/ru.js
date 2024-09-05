@@ -81,6 +81,7 @@ const ru = {
       deleteChannel: 'Канал удалён',
       renameChannel: 'Канал переименован',
       errorNetwork: 'Ошибка соединения',
+      errorMessage: 'Ошибка отправки сообщения',
     },
   },
 };
